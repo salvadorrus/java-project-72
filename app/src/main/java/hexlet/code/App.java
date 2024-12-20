@@ -1,5 +1,8 @@
 package hexlet.code;
 
+import hexlet.code.controllers.UrlController;
+import hexlet.code.repositiry.BaseRepository;
+import hexlet.code.utils.NamedRoutes;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 import gg.jte.ContentType;
@@ -39,8 +42,10 @@ public class App {
         var app = Javalin.create(config ->
                 config.fileRenderer(new JavalinJte(createTemplateEngine())));
 
-        app.get(NamedRoutes.rootPath(), UrlController::index);
         //app.get("/", ctx -> ctx.render("index.jte"));
+        //app.get(NamedRoutes.buildUrlPath(), UrlController::build);
+        app.get(NamedRoutes.rootPath(), UrlController::root);
+
         return app;
     }
 

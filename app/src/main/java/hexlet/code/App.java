@@ -45,6 +45,7 @@ public class App {
         //app.get("/", ctx -> ctx.render("index.jte"));
         //app.get(NamedRoutes.buildUrlPath(), UrlController::build);
         app.get(NamedRoutes.rootPath(), UrlController::root);
+        app.get(NamedRoutes.urlsPath(), UrlController::index);
 
         return app;
     }

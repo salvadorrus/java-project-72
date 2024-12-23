@@ -6,8 +6,12 @@ public class NamedRoutes {
         return "/";
     }
 
-    public static String buildUrlPath() {
-        return "/url/build";
+    public static String urlsPath() {
+        return "/urls";
     }
+
+//    public static String urlPath(Long id) {
+//        return urlPath(String.valueOf(id));
+//    }
 }
 

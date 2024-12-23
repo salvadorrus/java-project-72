@@ -8,8 +8,10 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UrlRepository extends  BaseRepository{
+
     public static void save(Url url) throws SQLException {
         String sql = "INSERT INTO urls (name, createdAt) VALUES (?, ?)";
         try (var conn = dataSource.getConnection();
@@ -44,6 +46,23 @@ public class UrlRepository extends  BaseRepository{
             }
             return result;
         }
+    }
 
+    public static Optional<Url> find(Long id) throws SQLException {
+        var sql = "SELECT * FROM urls WHERE id = ?";
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, id);
+            var resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                var name = resultSet.getString("name");
+                var createdAt = resultSet.getTimestamp("created_at");
+                var url = new Url(name);
+                url.setCreatedAt(createdAt);
+                url.setId(id);
+                return Optional.of(url);
+            }
+            return Optional.empty();
+        }
     }
 }

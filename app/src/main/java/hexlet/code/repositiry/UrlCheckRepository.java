@@ -62,4 +62,6 @@ public class UrlCheckRepository extends BaseRepository{
             return result;
         }
     }
+
+
 }

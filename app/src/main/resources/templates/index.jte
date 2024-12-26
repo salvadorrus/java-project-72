@@ -1,5 +1,6 @@
 @import gg.jte.Content
 @import hexlet.code.dto.BasePage
+@import hexlet.code.utils.NamedRoutes
 
 @param Content content = null
 @param Content footer = null
@@ -33,7 +34,7 @@
                 <h1 class="display-3 mb-0">Анализатор страниц</h1>
                 <p class="lead">Бесплатно проверяйте сайты на SEO пригодность</p>
 
-                <form action="#" method="post" class="rss-form text-body">
+                <form action="${NamedRoutes.urlsPath()}" method="post" class="rss-form text-body">
                     <div class="row">
                         <div class="col">
                             <div class="form-floating">

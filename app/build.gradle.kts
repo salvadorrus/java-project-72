@@ -30,6 +30,9 @@ dependencies {
     implementation("io.javalin:javalin:6.2.0")
     implementation("io.javalin:javalin-bundle:6.2.0")
     implementation("io.javalin:javalin-rendering:6.1.6")
+    implementation("org.apache.commons:commons-lang3:3.15.0")
+    implementation("org.apache.commons:commons-collections4:4.4")
+    implementation("commons-validator:commons-validator:1.8.0")
 
     testImplementation("org.assertj:assertj-core:3.26.3")
     testImplementation(platform("org.junit:junit-bom:5.10.3"))

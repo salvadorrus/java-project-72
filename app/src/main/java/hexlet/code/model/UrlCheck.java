@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 
 public class UrlCheck extends BasePage {
-    private Long id;
+    private int id;
     private int statusCode;
     private String name;
     private String title;
@@ -25,14 +25,14 @@ public class UrlCheck extends BasePage {
     private Timestamp createdAt;
     private List<UrlCheck> urlChecks;
 
-    public UrlCheck(int statusCode, String title, String h1, String description, Long urlId) {
+    public UrlCheck(int statusCode, String title, String h1, String description, int urlId) {
         this.statusCode = statusCode;
         this.title = title;
         this.h1 = h1;
         this.description = description;
     }
 
-    public UrlCheck(Long id, String name, Timestamp createdAt, List<UrlCheck> urlChecks) {
+    public UrlCheck(int id, String name, Timestamp createdAt, List<UrlCheck> urlChecks) {
 
     }
 }

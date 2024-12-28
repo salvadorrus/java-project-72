@@ -33,6 +33,8 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.15.0")
     implementation("org.apache.commons:commons-collections4:4.4")
     implementation("commons-validator:commons-validator:1.8.0")
+    implementation("com.konghq:unirest-java:3.14.5")
+    implementation("org.jsoup:jsoup:1.18.1")
 
     testImplementation("org.assertj:assertj-core:3.26.3")
     testImplementation(platform("org.junit:junit-bom:5.10.3"))

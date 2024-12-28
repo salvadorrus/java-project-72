@@ -16,6 +16,11 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
+import kong.unirest.UnirestException;
+import org.jsoup.Jsoup;
+
 public class UrlController {
 
 //    public static void build(Context ctx) {
@@ -23,7 +28,7 @@ public class UrlController {
 //        ctx.render("urls/build.jte", model("page", page));
 //    }
 
-    public static void root (Context ctx) {
+    public static void root(Context ctx) {
         var page = new BasePage();
         ctx.render("index.jte", Collections.singletonMap("page", page));
     }
@@ -38,7 +43,7 @@ public class UrlController {
     }
 
     public static void show(Context ctx) throws SQLException {
-        var id = ctx.pathParamAsClass("id", Long.class).get();
+        var id = ctx.pathParamAsClass("id", Integer.class).get();
         var url = UrlRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
         var urlChecks = UrlCheckRepository.getEntitiesById(id);
@@ -66,9 +71,9 @@ public class UrlController {
             return;
         }
 
-        //Url url = UrlRepository.findExisting(normalizedURL).orElse(null);
+        Url url = UrlRepository.findExisting(normalizedURL).orElse(null);
 
-        if (UrlRepository.findExisting(normalizedURL)) {
+        if (url != null) {
             ctx.sessionAttribute("flash", "Страница уже существует");
             ctx.sessionAttribute("flashType", "info");
             ctx.redirect(NamedRoutes.urlsPath());
@@ -79,7 +84,29 @@ public class UrlController {
             ctx.sessionAttribute("flashType", "success");
             ctx.redirect(NamedRoutes.urlsPath());
         }
+    }
 
+    public static void check(Context ctx) throws SQLException {
+        int urlId = ctx.pathParamAsClass("id", Integer.class).get();
+        var url = UrlRepository.find(urlId).get();
+        try {
+            HttpResponse<String> response = Unirest.get(url.getName())
+                    .asString();
+            var doc = Jsoup.parse(response.getBody());
+            var statusCode = response.getStatus();
+            var title = doc.title();
+            var description = doc.select("meta[name=description]").attr("content");
+            var h1 = doc.select("h1").text();
+            var urlCheck = new UrlCheck(statusCode, title, h1, description, urlId);
+            UrlCheckRepository.save(urlCheck);
+            ctx.sessionAttribute("flash", "Страница успешно проверена");
+            ctx.sessionAttribute("flashType", "success");
+            ctx.redirect(NamedRoutes.urlPath(urlId));
+        } catch (Exception e) {
+            ctx.sessionAttribute("flash", "Некорректный адрес");
+            ctx.sessionAttribute("flashType", "danger");
+            ctx.redirect(NamedRoutes.urlPath(urlId));
+        }
     }
 
     public static String normalizedURL(URL url) {

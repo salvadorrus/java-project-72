@@ -22,7 +22,7 @@ public class UrlRepository extends  BaseRepository{
             var generatedKeys = preparedStatement.getGeneratedKeys();
 
             if (generatedKeys.next()) {
-                url.setId(generatedKeys.getLong(1));
+                url.setId(generatedKeys.getInt(1));
             } else {
                 throw new SQLException("DB have not returned an id after saving an entity");
             }
@@ -36,7 +36,7 @@ public class UrlRepository extends  BaseRepository{
             var resultSet = stmt.executeQuery();
             var result = new ArrayList<Url>();
             while (resultSet.next()) {
-                var id = resultSet.getLong("id");
+                var id = resultSet.getInt("id");
                 var name = resultSet.getString("name");
                 var createdAt = resultSet.getTimestamp("created_at");
                 var url = new Url(name);
@@ -48,7 +48,7 @@ public class UrlRepository extends  BaseRepository{
         }
     }
 
-    public static Optional<Url> find(Long id) throws SQLException {
+    public static Optional<Url> find(int id) throws SQLException {
         var sql = "SELECT * FROM urls WHERE id = ?";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
@@ -66,13 +66,23 @@ public class UrlRepository extends  BaseRepository{
         }
     }
 
-    public static boolean findExisting(String name) throws SQLException {
+    public static Optional<Url>  findExisting(String name) throws SQLException {
         var sql = "SELECT * FROM urls WHERE name = ?";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, name);
             var resultSet = stmt.executeQuery();
-            return resultSet.next();
+            if (resultSet.next()) {
+                var nameUrl = resultSet.getString("name");
+                var createdAt = resultSet.getTimestamp("created_at");
+                var id = resultSet.getInt("id");
+                var url = new Url(nameUrl);
+                url.setCreatedAt(createdAt);
+                url.setId(id);
+
+                return Optional.of(url);
+            }
+            return Optional.empty();
         }
     }
 }

@@ -31,7 +31,7 @@ public class UrlCheckRepository extends BaseRepository{
 
             var generatedKeys = stmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                urlCheck.setId(generatedKeys.getLong(1));
+                urlCheck.setId(generatedKeys.getInt(1));
                 urlCheck.setCreatedAt(datetime);
             } else {
                 throw new SQLException("DB have not returned an id after saving an entity");
@@ -39,7 +39,7 @@ public class UrlCheckRepository extends BaseRepository{
         }
     }
 
-    public static List<UrlCheck> getEntitiesById(Long urlId) throws SQLException {
+    public static List<UrlCheck> getEntitiesById(int urlId) throws SQLException {
         var sql = "SELECT * FROM url_checks WHERE url_id = ? ORDER BY created_at DESC";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
@@ -48,7 +48,7 @@ public class UrlCheckRepository extends BaseRepository{
             var result = new ArrayList<UrlCheck>();
 
             while (resultSet.next()) {
-                var id = resultSet.getLong("id");
+                var id = resultSet.getInt("id");
                 var statusCode = resultSet.getInt("status_code");
                 var title = resultSet.getString("title");
                 var h1 = resultSet.getString("h1");

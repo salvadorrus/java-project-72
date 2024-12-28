@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 
 public class Url {
-    private Long id;
+    private int id;
     private String name;
     private Timestamp createdAt;
 

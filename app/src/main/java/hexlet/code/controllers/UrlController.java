@@ -1,6 +1,7 @@
 package hexlet.code.controllers;
 
 import hexlet.code.dto.BasePage;
+import hexlet.code.dto.UrlsPage;
 import hexlet.code.model.Url;
 import hexlet.code.dto.UrlPage;
 import hexlet.code.model.UrlCheck;
@@ -35,7 +36,8 @@ public class UrlController {
 
     public static void index(Context ctx) throws SQLException {
         List<Url> urls = UrlRepository.getEntities();
-        var page = new UrlPage(urls);
+        var checks = UrlCheckRepository.getAllChecks();
+        var page = new UrlsPage(urls, checks);
         String flash = ctx.consumeSessionAttribute("flash");
         page.setFlashType(ctx.consumeSessionAttribute("flashType"));
         page.setFlash(flash);
@@ -43,11 +45,11 @@ public class UrlController {
     }
 
     public static void show(Context ctx) throws SQLException {
-        var id = ctx.pathParamAsClass("id", Integer.class).get();
+        int id = ctx.pathParamAsClass("id", Integer.class).get();
         var url = UrlRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
         var urlChecks = UrlCheckRepository.getEntitiesById(id);
-        var page = new UrlCheck(id, url.getName(), url.getCreatedAt(), urlChecks);
+        var page = new UrlPage(url, urlChecks);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         page.setFlashType(ctx.consumeSessionAttribute("flashType"));
         ctx.render("urls/show.jte", Collections.singletonMap("page", page));

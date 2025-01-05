@@ -9,10 +9,8 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 public class UrlCheckRepository extends BaseRepository{
 
     public static void save(UrlCheck urlCheck) throws SQLException {
@@ -62,6 +60,52 @@ public class UrlCheckRepository extends BaseRepository{
             return result;
         }
     }
+    public static Optional<UrlCheck> getLastCheck(Integer urlId) throws SQLException {
+        var sql = "SELECT * FROM url_checks WHERE url_id = ? ORDER BY created_at DESC LIMIT 1";
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, urlId);
+            var resultSet = stmt.executeQuery();
 
+            if (resultSet.next()) {
+                var id = resultSet.getInt("id");
+                var statusCode = resultSet.getInt("status_code");
+                var title = resultSet.getString("title");
+                var h1 = resultSet.getString("h1");
+                var description = resultSet.getString("description");
+                var createdAt = resultSet.getTimestamp("created_at");
+                var urlCheck = new UrlCheck(statusCode, title, h1, description, urlId);
+                urlCheck.setId(id);
+                urlCheck.setCreatedAt(createdAt);
+                return Optional.of(urlCheck);
+            }
+            return Optional.empty();
+        }
+    }
+
+    public static Map<Integer, UrlCheck> getAllChecks() throws SQLException {
+        var sql = "SELECT DISTINCT ON (url_id) * FROM url_checks ORDER BY url_id, created_at DESC";
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.prepareStatement(sql);
+             var resultSet = stmt.executeQuery()) {
+            Map<Integer, UrlCheck> result = new HashMap<>();
+
+            while (resultSet.next()) {
+                var id = resultSet.getInt("id");
+                var statusCode = resultSet.getInt("status_code");
+                var title = resultSet.getString("title");
+                var h1 = resultSet.getString("h1");
+                var description = resultSet.getString("description");
+                var urlId = resultSet.getInt("url_id");
+                var createdAt = resultSet.getTimestamp("created_at");
+                var urlCheck = new UrlCheck(statusCode, title, h1, description, urlId);
+                urlCheck.setId(id);
+                urlCheck.setCreatedAt(createdAt);
+                result.put(urlCheck.getUrlId(), urlCheck);
+            }
+
+            return result;
+        }
+    }
 
 }

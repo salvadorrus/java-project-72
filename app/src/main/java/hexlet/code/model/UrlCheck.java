@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -14,16 +15,16 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 
-public class UrlCheck extends BasePage {
+public class UrlCheck {
     private int id;
     private int statusCode;
     private String name;
     private String title;
     private String h1;
     private String description;
-    private Long urlId;
+    private int urlId;
     private Timestamp createdAt;
-    private List<UrlCheck> urlChecks;
+    //private List<UrlCheck> urlChecks;
 
     public UrlCheck(int statusCode, String title, String h1, String description, int urlId) {
         this.statusCode = statusCode;
@@ -32,7 +33,11 @@ public class UrlCheck extends BasePage {
         this.description = description;
     }
 
-    public UrlCheck(int id, String name, Timestamp createdAt, List<UrlCheck> urlChecks) {
+//    public UrlCheck(int urlId, int statusCode, String title, String h1, String description, LocalDateTime createdAt) {
+//
+//    }
 
-    }
+//    public UrlCheck(int id, String name, Timestamp createdAt, List<UrlCheck> urlChecks) {
+//
+//    }
 }

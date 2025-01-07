@@ -52,7 +52,7 @@ public class UrlRepository extends  BaseRepository{
         var sql = "SELECT * FROM urls WHERE id = ?";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, id);
+            stmt.setInt(1, id);
             var resultSet = stmt.executeQuery();
             if (resultSet.next()) {
                 var name = resultSet.getString("name");
@@ -66,7 +66,7 @@ public class UrlRepository extends  BaseRepository{
         }
     }
 
-    public static Optional<Url>  findExisting(String name) throws SQLException {
+    public static Optional<Url> findName(String name) throws SQLException {
         var sql = "SELECT * FROM urls WHERE name = ?";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {

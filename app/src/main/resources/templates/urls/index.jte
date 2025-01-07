@@ -26,12 +26,9 @@ content = @`
                     <td><a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a></td>
                     <td>${FormatedData.formatedData(url.getCreatedAt())}</td>
 
-                    @if(page.getChecks().containsKey(url.getId()))  <!-- Если последняя проверка существует -->
+                    @if(page.getChecks().containsKey(url.getId()))
                         <td>${FormatedData.formatedData(page.getChecks().get(url.getId()).getCreatedAt())}</td>
                         <td>${page.getChecks().get(url.getId()).getStatusCode()}</td>
-                    @else  <!-- Если проверок нет, выводим сообщение -->
-                        <td>Нет данных</td>
-                        <td>---</td>
                     @endif
                 </tr>
             @endfor

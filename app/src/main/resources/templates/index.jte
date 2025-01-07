@@ -11,12 +11,12 @@ content  = @`
                 <h1 class="display-3 mb-0">Анализатор страниц</h1>
                 <p class="lead">Бесплатно проверяйте сайты на SEO пригодность</p>
 
-
                 <form action="${NamedRoutes.urlsPath()}" method="post" class="rss-form text-body">
                     <div class="row">
                         <div class="col">
                             <div class="form-floating">
-                                <input id="url-input" autofocus="" type="text" required="" name="url" aria-label="url" class="form-control w-100" placeholder="ссылка" autocomplete="off">
+                                <input id="url-input" autofocus="" type="text" required="" name="url" aria-label="url"
+                                       class="form-control w-100" placeholder="ссылка" autocomplete="off">
                                 <label for="url-input">Ссылка</label>
                             </div>
                         </div>
@@ -30,13 +30,11 @@ content  = @`
             </div>
         </div>
     </div>
-
-
 `
 ,
 footer = @`
     <div class="footer">
-        <p>Thanks for visiting!</p>
+        <p>Thanks for visit!</p>
     </div>
 `
 )

@@ -19,15 +19,9 @@ import java.util.List;
 
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import kong.unirest.UnirestException;
 import org.jsoup.Jsoup;
 
 public class UrlController {
-
-//    public static void build(Context ctx) {
-//        var page = new BuildUrlPage();
-//        ctx.render("urls/build.jte", model("page", page));
-//    }
 
     public static void root(Context ctx) {
         var page = new BasePage();
@@ -38,9 +32,8 @@ public class UrlController {
         List<Url> urls = UrlRepository.getEntities();
         var checks = UrlCheckRepository.getAllChecks();
         var page = new UrlsPage(urls, checks);
-        String flash = ctx.consumeSessionAttribute("flash");
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
         page.setFlashType(ctx.consumeSessionAttribute("flashType"));
-        page.setFlash(flash);
         ctx.render("urls/index.jte", Collections.singletonMap("page", page));
     }
 
@@ -48,7 +41,7 @@ public class UrlController {
         int id = ctx.pathParamAsClass("id", Integer.class).get();
         var url = UrlRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
-        var urlChecks = UrlCheckRepository.getEntitiesById(id);
+        var urlChecks = UrlCheckRepository.getCheckId(id);
         var page = new UrlPage(url, urlChecks);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         page.setFlashType(ctx.consumeSessionAttribute("flashType"));
@@ -57,10 +50,7 @@ public class UrlController {
 
     public static void create(Context ctx) throws SQLException {
         var input = ctx.formParamAsClass("url", String.class)
-                .get()
-                .toLowerCase()
-                .trim();
-
+                .get().toLowerCase().trim();
         String normalizedURL;
 
         try {
@@ -73,7 +63,7 @@ public class UrlController {
             return;
         }
 
-        Url url = UrlRepository.findExisting(normalizedURL).orElse(null);
+        Url url = UrlRepository.findName(normalizedURL).orElse(null);
 
         if (url != null) {
             ctx.sessionAttribute("flash", "Страница уже существует");
@@ -90,22 +80,22 @@ public class UrlController {
 
     public static void check(Context ctx) throws SQLException {
         int urlId = ctx.pathParamAsClass("id", Integer.class).get();
-        var url = UrlRepository.find(urlId).get();
+        var url = UrlRepository.find(urlId).
+                orElseThrow(() -> new NotFoundResponse("Entity with id " + urlId + " not found"));;
         try {
-            HttpResponse<String> response = Unirest.get(url.getName())
-                    .asString();
+            HttpResponse<String> response = Unirest.get(url.getName()).asString();
             var doc = Jsoup.parse(response.getBody());
             var statusCode = response.getStatus();
             var title = doc.title();
             var description = doc.select("meta[name=description]").attr("content");
             var h1 = doc.select("h1").text();
-            var urlCheck = new UrlCheck(statusCode, title, h1, description, urlId);
+            var urlCheck = new UrlCheck(urlId, statusCode, title, h1, description);
             UrlCheckRepository.save(urlCheck);
             ctx.sessionAttribute("flash", "Страница успешно проверена");
             ctx.sessionAttribute("flashType", "success");
             ctx.redirect(NamedRoutes.urlPath(urlId));
         } catch (Exception e) {
-            ctx.sessionAttribute("flash", "Некорректный адрес");
+            ctx.sessionAttribute("flash", "Некорректный адрес" + " " + url.getName());
             ctx.sessionAttribute("flashType", "danger");
             ctx.redirect(NamedRoutes.urlPath(urlId));
         }

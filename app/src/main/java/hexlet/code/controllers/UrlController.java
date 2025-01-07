@@ -81,7 +81,7 @@ public class UrlController {
     public static void check(Context ctx) throws SQLException {
         int urlId = ctx.pathParamAsClass("id", Integer.class).get();
         var url = UrlRepository.find(urlId).
-                orElseThrow(() -> new NotFoundResponse("Entity with id " + urlId + " not found"));;
+                orElseThrow(() -> new NotFoundResponse("Entity with id " + urlId + " not found"));
         try {
             HttpResponse<String> response = Unirest.get(url.getName()).asString();
             var doc = Jsoup.parse(response.getBody());
@@ -110,4 +110,3 @@ public class UrlController {
         return protocol + symbols + host + colonBeforePort + port;
     }
 }
-

@@ -1,10 +1,7 @@
 package hexlet.code.utils;
 
-
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class FormatedData {
 

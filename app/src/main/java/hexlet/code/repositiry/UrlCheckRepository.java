@@ -1,13 +1,9 @@
 package hexlet.code.repositiry;
 
 import hexlet.code.model.UrlCheck;
-
-import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.time.Instant;
 import java.util.*;
 

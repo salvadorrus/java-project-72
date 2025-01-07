@@ -1,14 +1,11 @@
 package hexlet.code.model;
 
-import hexlet.code.dto.BasePage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter

@@ -95,7 +95,7 @@ public class UrlController {
             ctx.sessionAttribute("flashType", "success");
             ctx.redirect(NamedRoutes.urlPath(urlId));
         } catch (Exception e) {
-            ctx.sessionAttribute("flash", "Некорректный адрес");
+            ctx.sessionAttribute("flash", "Некорректный адрес" + url);
             ctx.sessionAttribute("flashType", "danger");
             ctx.redirect(NamedRoutes.urlPath(urlId));
         }

@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Url {
     private int id;
     private String name;

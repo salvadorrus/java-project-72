@@ -2,6 +2,7 @@ package hexlet.code;
 
 import hexlet.code.model.Url;
 import hexlet.code.repositiry.UrlRepository;
+import hexlet.code.repositiry.UrlCheckRepository;
 import hexlet.code.utils.NamedRoutes;
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
@@ -24,12 +25,10 @@ public class AppTest {
 
     private static Javalin app;
     private static MockWebServer mockServer;
-    private static String nameUrl;
 
     @BeforeAll
     public static void beforeAll() throws IOException {
         mockServer = new MockWebServer();
-        nameUrl = mockServer.url("/").toString();
         MockResponse mockResponse = new MockResponse().setBody(readFile("fixtures/test.html"));
         mockServer.enqueue(mockResponse);
     }
@@ -103,5 +102,22 @@ public class AppTest {
             assertThat(afterPost.code()).isEqualTo(200);
         });
     }
+
+//    @Test
+//    void testCheckUrl() throws SQLException {
+//        var url = mockServer.url("/").toString();
+//        Url urlCheck = new Url(url);
+//        UrlRepository.save(urlCheck);
+//
+//        JavalinTest.test(app, (server, client) -> {
+//            var response = client.post(NamedRoutes.checksPath(urlCheck.getId()));
+//            assertThat(response.code()).isEqualTo(200);
+//            var check = UrlCheckRepository.findId(urlCheck.getId()).orElseThrow();
+//
+//            assertThat(check.getTitle()).isEqualTo("Тест");
+//            assertThat(check.getH1()).isEqualTo("Анализатор страниц");
+//            assertThat(check.getDescription()).isEqualTo("");
+//        });
+//    }
 }
 

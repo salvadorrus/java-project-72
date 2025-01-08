@@ -39,7 +39,7 @@ public class UrlController {
 
     public static void show(Context ctx) throws SQLException {
         int id = ctx.pathParamAsClass("id", Integer.class).get();
-        var url = UrlRepository.find(id)
+        var url = UrlRepository.findId(id)
                 .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
         var urlChecks = UrlCheckRepository.getCheckId(id);
         var page = new UrlPage(url, urlChecks);
@@ -51,11 +51,11 @@ public class UrlController {
     public static void create(Context ctx) throws SQLException {
         var input = ctx.formParamAsClass("url", String.class)
                 .get().toLowerCase().trim();
-        String normalizedURL;
+        String normalizedUrl;
 
         try {
             URL url = new URI(input).toURL();
-            normalizedURL = normalizedURL(url);
+            normalizedUrl = normalizedURL(url);
         } catch (Exception e) {
             ctx.sessionAttribute("flash", "Некорректный URL");
             ctx.sessionAttribute("flashType", "warning");
@@ -63,14 +63,14 @@ public class UrlController {
             return;
         }
 
-        Url url = UrlRepository.findName(normalizedURL).orElse(null);
+        Url url = UrlRepository.findName(normalizedUrl).orElse(null);
 
         if (url != null) {
             ctx.sessionAttribute("flash", "Страница уже существует");
             ctx.sessionAttribute("flashType", "info");
             ctx.redirect(NamedRoutes.urlsPath());
         } else {
-            var newUrl = new Url(normalizedURL);
+            var newUrl = new Url(normalizedUrl);
             UrlRepository.save(newUrl);
             ctx.sessionAttribute("flash", "Страница успешно добавлена");
             ctx.sessionAttribute("flashType", "success");
@@ -80,7 +80,7 @@ public class UrlController {
 
     public static void check(Context ctx) throws SQLException {
         int urlId = ctx.pathParamAsClass("id", Integer.class).get();
-        var url = UrlRepository.find(urlId).
+        var url = UrlRepository.findId(urlId).
                 orElseThrow(() -> new NotFoundResponse("Entity with id " + urlId + " not found"));
         try {
             HttpResponse<String> response = Unirest.get(url.getName()).asString();
@@ -95,7 +95,7 @@ public class UrlController {
             ctx.sessionAttribute("flashType", "success");
             ctx.redirect(NamedRoutes.urlPath(urlId));
         } catch (Exception e) {
-            ctx.sessionAttribute("flash", "Некорректный адрес" + " " + url.getName());
+            ctx.sessionAttribute("flash", "Некорректный адрес");
             ctx.sessionAttribute("flashType", "danger");
             ctx.redirect(NamedRoutes.urlPath(urlId));
         }

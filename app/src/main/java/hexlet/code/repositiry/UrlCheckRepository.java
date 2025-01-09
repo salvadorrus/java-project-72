@@ -39,7 +39,7 @@ public class UrlCheckRepository extends BaseRepository {
         }
     }
 
-    public static List<UrlCheck> getCheckId(int urlId) throws SQLException {
+    public static List<UrlCheck> findId(int urlId) throws SQLException {
         var sql = "SELECT * FROM url_checks WHERE url_id = ?";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
@@ -54,8 +54,7 @@ public class UrlCheckRepository extends BaseRepository {
                 var h1 = resultSet.getString("h1");
                 var description = resultSet.getString("description");
                 var createdAt = resultSet.getTimestamp("created_at");
-                var urlCheck = new UrlCheck(urlId, statusCode, title, h1, description);
-                urlCheck.setId(id);
+                var urlCheck = new UrlCheck(id, urlId, statusCode, title, h1, description);
                 urlCheck.setCreatedAt(createdAt);
                 result.add(urlCheck);
             }
@@ -76,7 +75,7 @@ public class UrlCheckRepository extends BaseRepository {
 //                var h1 = resultSet.getString("h1");
 //                var description = resultSet.getString("description");
 //                var createdAt = resultSet.getTimestamp("created_at");
-//                var urlCheck = new UrlCheck(urlId, statusCode, title, h1, description);
+//                var urlCheck = new UrlCheck(id, urlId, statusCode, title, h1, description);
 //                urlCheck.setId(id);
 //                urlCheck.setCreatedAt(createdAt);
 //
@@ -87,7 +86,7 @@ public class UrlCheckRepository extends BaseRepository {
 //    }
 
 
-    public static Map<Integer, UrlCheck> getAllChecks() throws SQLException {
+    public static Map<Integer, UrlCheck> getChecks() throws SQLException {
         var sql = "SELECT DISTINCT ON (url_id) * FROM url_checks ORDER BY url_id, created_at DESC";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql);

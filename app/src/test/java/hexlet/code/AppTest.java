@@ -103,21 +103,21 @@ public class AppTest {
         });
     }
 
-//    @Test
-//    void testCheckUrl() throws SQLException {
-//        var url = mockServer.url("/").toString();
-//        Url urlCheck = new Url(url);
-//        UrlRepository.save(urlCheck);
-//
-//        JavalinTest.test(app, (server, client) -> {
-//            var response = client.post(NamedRoutes.checksPath(urlCheck.getId()));
-//            assertThat(response.code()).isEqualTo(200);
-//            var check = UrlCheckRepository.findId(urlCheck.getId()).orElseThrow();
-//
-//            assertThat(check.getTitle()).isEqualTo("Тест");
-//            assertThat(check.getH1()).isEqualTo("Анализатор страниц");
-//            assertThat(check.getDescription()).isEqualTo("");
-//        });
-//    }
+    @Test
+    void testCheckUrl() throws SQLException {
+        var url = mockServer.url("/").toString();
+        Url urlCheck = new Url(url);
+        UrlRepository.save(urlCheck);
+
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.post(NamedRoutes.checksPath(urlCheck.getId()));
+            assertThat(response.code()).isEqualTo(200);
+            var check = UrlCheckRepository.find(urlCheck.getId()).orElseThrow();
+
+            assertThat(check.getTitle()).isEqualTo("Тест");
+            assertThat(check.getH1()).isEqualTo("Анализатор страниц");
+            assertThat(check.getDescription()).isEqualTo("");
+        });
+    }
 }
 

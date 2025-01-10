@@ -104,7 +104,7 @@ public class AppTest {
     }
 
     @Test
-    void testCheckUrl() throws SQLException {
+    void testMockServer() throws SQLException {
         var url = mockServer.url("/").toString();
         Url urlCheck = new Url(url);
         UrlRepository.save(urlCheck);

@@ -1,4 +1,4 @@
-package hexlet.code.repositiry;
+package hexlet.code.repository;
 
 import hexlet.code.model.Url;
 

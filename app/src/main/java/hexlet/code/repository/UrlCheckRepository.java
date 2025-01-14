@@ -1,4 +1,4 @@
-package hexlet.code.repositiry;
+package hexlet.code.repository;
 
 import hexlet.code.model.UrlCheck;
 
@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.HashMap;
-
 
 public class UrlCheckRepository extends BaseRepository {
 
@@ -83,7 +82,6 @@ public class UrlCheckRepository extends BaseRepository {
             return Optional.empty();
         }
     }
-
 
     public static Map<Integer, UrlCheck> getChecks() throws SQLException {
         var sql = "SELECT DISTINCT ON (url_id) * FROM url_checks ORDER BY url_id, created_at DESC";

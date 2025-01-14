@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 @Setter
 @ToString
 @AllArgsConstructor
-
 public class UrlCheck {
     private int id;
     private int statusCode;

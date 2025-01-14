@@ -1,7 +1,7 @@
 package hexlet.code;
 
 import hexlet.code.controllers.UrlController;
-import hexlet.code.repositiry.BaseRepository;
+import hexlet.code.repository.BaseRepository;
 import hexlet.code.utils.NamedRoutes;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;

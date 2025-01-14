@@ -36,6 +36,7 @@ dependencies {
     implementation("commons-validator:commons-validator:1.8.0")
     implementation("com.konghq:unirest-java:3.14.5")
     implementation("org.jsoup:jsoup:1.18.1")
+    implementation("org.postgresql:postgresql:42.7.3")
 
     testImplementation("org.assertj:assertj-core:3.26.3")
     testImplementation(platform("org.junit:junit-bom:5.10.3"))

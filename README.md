@@ -11,3 +11,6 @@
 ---
 ### The Page Analyzer is a website based on the Javalin platform that analyzes pages for SEO suitability.
 
+![Image1](https://github.com/user-attachments/assets/7257ba97-ce23-431f-89f7-f191314ac632)
+![Image2](https://github.com/user-attachments/assets/5f16084a-7481-443a-ba41-55157407f748)
+![Image3](https://github.com/user-attachments/assets/98f7fd63-df4a-415f-8e63-0edd882fd0ba)

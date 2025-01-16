@@ -6,7 +6,7 @@
 <a href="https://codeclimate.com/github/salvadorrus/java-project-72/maintainability"><img src="https://api.codeclimate.com/v1/badges/fbd6ad0bd4525daee3cd/maintainability" /></a>
 [![Java CI](https://github.com/salvadorrus/java-project-72/actions/workflows/main.yml/badge.svg)](https://github.com/salvadorrus/java-project-72/actions/workflows/main.yml)
 ---
-### Link for deployed app:
+### Link for deployed app: https://java-project-72-hocd.onrender.com
 
 ---
 ### The Page Analyzer is a website based on the Javalin platform that analyzes pages for SEO suitability.
